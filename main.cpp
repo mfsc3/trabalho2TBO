@@ -5,7 +5,7 @@ using namespace std;
 
 vector<int> failure_function(const vector<char> &padrao);
 
-vector<int> kmp(const vector<char> &texto, const vector<char> &padrao, const vector<int> &vetor_falha);
+vector<int> kmp(const vector<char> &texto, const vector<char> &padrao);
 
 int main(){
 
@@ -13,9 +13,7 @@ int main(){
 
     vector<char> padrao = {'a', 'b', 'c', 'd'};
 
-    vector<int> vetor_falhas = failure_function(padrao);
-
-    vector<int> resultado = kmp(texto, padrao, vetor_falhas);
+    vector<int> resultado = kmp(texto, padrao);
 
     for(int i = 0; i < resultado.size(); i++){
         cout << resultado[i] << "\n";
@@ -66,9 +64,10 @@ vector<int> failure_function(const vector<char> &padrao){
     return aux;
 }
 
-vector<int> kmp(const vector<char> &texto, const vector<char> &padrao, const vector<int> &vetor_falha){
+vector<int> kmp(const vector<char> &texto, const vector<char> &padrao){
     int indice_padrao = 0;
     int i = 0;
+    vector<int> vetor_falha = failure_function(padrao);
     vector<int> indices_ocorrencia;
     while(i < texto.size()){
 
