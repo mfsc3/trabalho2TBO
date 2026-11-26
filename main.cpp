@@ -7,13 +7,16 @@ using namespace std;
 
 vector<int> failure_function(const string &padrao);
 
-vector<int> kmp(const vector<char> &texto, const string &padrao);
+vector<int> kmp(istream &texto, const string &padrao);
 
 int main(){
 
-    vector<char> texto = {'a', 'b', 'c', 'a', 'c', 'd', 'a', 'b', 'c', 'd', 'a', 'b', 'c', 'a', 'b', 'c', 'd', 'a', 'b', 'c', 'd', 'b', 'c', 'a'};
+    //vector<char> texto = {'a', 'b', 'c', 'a', 'c', 'd', 'a', 'b', 'c', 'd', 'a', 'b', 'c', 'a', 'b', 'c', 'd', 'a', 'b', 'c', 'd', 'b', 'c', 'a'};
 
-    string padrao = {'a', 'b', 'c', 'd'};
+    ifstream texto("poema.txt");
+    if (!texto) return 1;
+
+    string padrao = "Maria";
 
     vector<int> resultado = kmp(texto, padrao);
 
@@ -66,30 +69,29 @@ vector<int> failure_function(const string &padrao){
     return aux;
 }
 
-vector<int> kmp(const vector<char> &texto, const string &padrao){
+vector<int> kmp(istream &texto, const string &padrao){
     int indice_padrao = 0;
-    int i = 0;
+    long long i = 0;
+    char c;
     vector<int> vetor_falha = failure_function(padrao);
     vector<int> indices_ocorrencia;
-    while(i < texto.size()){
 
-        while(i < texto.size() && indice_padrao < padrao.size() && texto[i] == padrao[indice_padrao]){
+    while(texto.get(c)){
+
+        while(indice_padrao > 0 && c != padrao[indice_padrao]){
+            indice_padrao = vetor_falha[indice_padrao - 1];
+        }
+
+        if(indice_padrao < padrao.size() && c == padrao[indice_padrao]){
             indice_padrao++;
-            i++;
         }
         
         if(indice_padrao == padrao.size()){
             indices_ocorrencia.push_back(i - padrao.size());
             indice_padrao = vetor_falha[--indice_padrao]; 
         }
-        else{
-            if(indice_padrao > 0){
-                indice_padrao = vetor_falha[--indice_padrao]; 
-            }
-            else{
-                i++;
-            }
-        }
+
+        i++;
     }
 
     return indices_ocorrencia;
