@@ -1,17 +1,19 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
-vector<int> failure_function(const vector<char> &padrao);
+vector<int> failure_function(const string &padrao);
 
-vector<int> kmp(const vector<char> &texto, const vector<char> &padrao);
+vector<int> kmp(const vector<char> &texto, const string &padrao);
 
 int main(){
 
     vector<char> texto = {'a', 'b', 'c', 'a', 'c', 'd', 'a', 'b', 'c', 'd', 'a', 'b', 'c', 'a', 'b', 'c', 'd', 'a', 'b', 'c', 'd', 'b', 'c', 'a'};
 
-    vector<char> padrao = {'a', 'b', 'c', 'd'};
+    string padrao = {'a', 'b', 'c', 'd'};
 
     vector<int> resultado = kmp(texto, padrao);
 
@@ -39,7 +41,7 @@ i = 3
 j = 5
 */
 
-vector<int> failure_function(const vector<char> &padrao){
+vector<int> failure_function(const string &padrao){
     int i = 0, j = 0;
 
     vector<int> aux(padrao.size(), 0);
@@ -64,7 +66,7 @@ vector<int> failure_function(const vector<char> &padrao){
     return aux;
 }
 
-vector<int> kmp(const vector<char> &texto, const vector<char> &padrao){
+vector<int> kmp(const vector<char> &texto, const string &padrao){
     int indice_padrao = 0;
     int i = 0;
     vector<int> vetor_falha = failure_function(padrao);
